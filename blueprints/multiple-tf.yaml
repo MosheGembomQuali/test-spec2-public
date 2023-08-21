@@ -3,7 +3,7 @@ spec_version: 2-preview
 inputs:
   compute_service_name:
 #     type: string
-    type: execution-host
+    type: agent
     default: "eks"
   Application Version:
     type: string
@@ -22,6 +22,11 @@ inputs:
     type: string
     default: "val1"
     description: "environment variable test"
+    
+# instructions:
+  # source:
+    # store: test-spec2-public
+    # path: instructions/torque-documentation/index.md
 
 grains:
   first:
@@ -32,7 +37,7 @@ grains:
       source:
         path: terraform/simple-tf-module
         store: test-spec2-public
-      host:
+      agent:
         name: '{{.inputs.compute_service_name}}'
       inputs:
         - test: '1-{{.inputs.env_test}}-2'
@@ -48,7 +53,7 @@ grains:
      source:
        path: terraform/simple-tf-module
        store: test-spec2-public
-     host:
+     agent:
        name: '{{.inputs.compute_service_name}}'
      inputs:
        - test_input1: '1-{{.grains.first.outputs.output2}}-2'

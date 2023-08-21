@@ -2,18 +2,20 @@ spec_version: 2-preview
 
 inputs:
   compute_service_name:
-    type: string
-    default: "eks-main"
+    type: agent
 
 grains:
-  helloTF:
+  tf1:
     kind: terraform
+    tf-version: 1.3.5
     spec:
       source:
         path: terraform/simple-tf-module
         store: test-spec2-public
-      host:
+      agent:
         name: '{{.inputs.compute_service_name}}'
+      inputs:
+        - test_input2: "input2"
       scripts: 
         pre-tf-init:
           source:
@@ -24,4 +26,4 @@ grains:
           source:
             store: test-spec2-public
             path : scripts/tomerv_user_script.sh
-          arguments: "value"     
+          arguments: "value" 

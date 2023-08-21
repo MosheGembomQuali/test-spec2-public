@@ -61,10 +61,11 @@ grains:
       source:
         path: terraform/simple-tf-module
         store: test-spec2-public
-      host:
+      agent:
         name: '{{.inputs.execution_host1}}'
       inputs:
         - test_input1: '{{.inputs.generic_input}}'
+        - test_input2: dontcare
       outputs:
         - output1
 
@@ -73,7 +74,7 @@ grains:
     spec:
       source:
         path: https://github.com/open-toolchain/hello-helm.git//chart/hello
-      host:
+      agent:
         name: '{{.inputs.execution_host1}}'
       commands:
         - dep up chart/hello
@@ -85,12 +86,13 @@ grains:
     kind: terraform
     spec:
       source:
-        path: terraform/error-tf-module
+        path: terraform/simple-tf-module
         store: test-spec2-public
-      host:
+      agent:
         name: '{{.inputs.execution_host2}}'
       inputs:
         - test_input1: '{{.inputs.generic_input}}'
+        - test_input2: dontcare
       outputs:
         - output1
 
@@ -101,10 +103,11 @@ grains:
       source:
         path: terraform/simple-tf-module
         store: test-spec2-public
-      host:
+      agent:
         name: '{{.inputs.execution_host1}}'
       inputs:
         - test_input1: '{{.grains.terraform1.outputs.output1}}'
+        - test_input2: dontcare
 
   helm2:
     kind: helm
@@ -112,7 +115,7 @@ grains:
     spec:
       source:
         path: https://github.com/open-toolchain/hello-helm.git//chart/hello
-      host:
+      agent:
         name: '{{.inputs.execution_host1}}'
         service-account: '{{.inputs.service_account}}'
       commands:
@@ -126,7 +129,7 @@ grains:
     spec:
       source:
         path: https://github.com/open-toolchain/hello-helm.git//chart/hello
-      host:
+      agent:
         name: '{{.inputs.execution_host1}}'
       commands:
         - dep up chart/hello
@@ -150,7 +153,7 @@ grains:
       namespace: '{{ .inputs.namespace }}'
       env-vars:
         - test: newValue
-      host:
+      agent:
         name: '{{.inputs.execution_host1}}'
       #         service-account: "yakirl-sa"
       tags:
@@ -168,7 +171,7 @@ grains:
     kind: shell
     depends-on: kubernetes1
     spec:
-      host:
+      agent:
         name: '{{.inputs.execution_host1}}'
       activities:
         deploy:

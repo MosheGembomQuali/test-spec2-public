@@ -3,6 +3,8 @@ description: Deployes a vm from a template on a vcenter with tf and configures i
 
 
 inputs:
+  agent:
+    type: agent
   virtual_machine_template_name:
     display-style: normal
     type: string
@@ -40,17 +42,17 @@ grains:
         - vsphere_virtual_machine_default_ip_address
       source:
         path: github.com/QualiNext/test-spec2-public//terraform/vm-from-template-wait-for-ip
-      host:
-        name: docker-agent
+      agent:
+        name: '{{ .inputs.agent }}'
 
   apache_install:
     depends-on: virtual_machine
     kind: ansible
     spec: 
       source:
-        path: https://github.com/QualiNext/test-spec2-public//ansible/install_httpd.yaml
-      host:
-        name: docker-agent
+        path: https://github.com/QualiNext/test-spec2-public//ansible/install_httpd_centos.yaml
+      agent:
+        name: '{{ .inputs.agent }}'
       inventory-file:
         all:
           hosts:

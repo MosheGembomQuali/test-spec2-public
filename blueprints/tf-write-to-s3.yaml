@@ -14,7 +14,7 @@ inputs:
 
 outputs:
   the_output:
-    value: 'in {{sandboxId}}, used bucket {{.inputs.bucket_name}} and parameters: param1={{.params.param1}}, snowflake={{params.snowflake}}, space_param={{params.space_param}}'
+    value: 'in {{envId}}, used bucket {{.inputs.bucket_name}} and parameters: param1={{.params.param1}}, snowflake={{params.snowflake}}, space_param={{params.space_param}}'
 
 grains:
   s3-write:
@@ -23,7 +23,7 @@ grains:
       source:
         # store: autogen_repo_sandbox_3416a76b
         path: github.com/QualiNext/terraform/s3-write
-      host:
+      agent:
         # '{{.inputs.compute_service_name}}'
         name: '{{.params.default_compute_service}}'
       tags:
@@ -32,5 +32,5 @@ grains:
 #         - aws_s3_bucket_object
       inputs:
         - BUCKET_NAME: '{{.inputs.bucket_name}}'
-        - SANDBOX_ID: '{{sandboxId}}'
+        - SANDBOX_ID: '{{envId}}'
         - CONTENT: '{{.inputs.content}} {{.params.param1}}'

@@ -20,7 +20,9 @@ grains:
       sources:
       - store: test-spec2-public
         path: manifests/nginx1/nginxmanifest.yaml
-#       namespace: '{{ .inputs.namespace }}'
-      namespace: '{{ sandboxid }}'
-      host:
+      namespace: '{{ .inputs.namespace }}'
+#       namespace: '{{ sandboxid }}'
+      agent:
         name: '{{.inputs.compute_service_name}}'
+        service-account: default
+# dummy
