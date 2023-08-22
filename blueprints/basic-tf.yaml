@@ -12,6 +12,6 @@ grains:
         path: terraform/simple-tf-module
         store: test-spec2-public
       agent:
-        name-1: '{{.inputs.compute_service_name}}'
+        name: '{{.inputs.compute_service_name}}'
       inputs:
         - test_input2: "input2"      
