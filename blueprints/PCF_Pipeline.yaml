@@ -12,7 +12,7 @@ grains:
       tags:
         auto-tag: false
       source:
-        store: amdocs-laas-poc
+        store: test-spec2-public-moshe
         path: terraform/ADO-Pipeline-Start
       agent:
       # The Torque agent that will be used to provision the environment.
@@ -42,7 +42,7 @@ grains:
       tags:
         auto-tag: false
       source:
-        store: amdocs-laas-poc
+        store: test-spec2-public-moshe
         path: terraform/ADO-Pipeline-Check-Stage
       agent:
       # The Torque agent that will be used to provision the environment.
@@ -68,7 +68,7 @@ grains:
       tags:
         auto-tag: false
       source:
-        store: amdocs-laas-poc
+        store: test-spec2-public-moshe
         path: terraform/ADO-Pipeline-Start
       agent:
       # The Torque agent that will be used to provision the environment.
@@ -99,7 +99,7 @@ grains:
       tags:
         auto-tag: false
       source:
-        store: amdocs-laas-poc
+        store: test-spec2-public-moshe
         path: terraform/ADO-Pipeline-Check-Stage
       agent:
       # The Torque agent that will be used to provision the environment.

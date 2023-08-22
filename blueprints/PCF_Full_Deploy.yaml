@@ -15,7 +15,7 @@ grains:
     kind: blueprint
     spec:
       source: 
-        store: amdocs-laas-poc
+        store: test-spec2-public-moshe
         path: blueprints/Azure_Instances.yaml
       inputs:
       - vm_set: PCF2-B
@@ -27,7 +27,7 @@ grains:
     depends-on: VMs
     spec:
       source: 
-        store: amdocs-laas-poc
+        store: test-spec2-public-moshe
         path: blueprints/PCF_Pipeline.yaml
       inputs:
       - agent: aks-torque

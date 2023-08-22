@@ -7,7 +7,7 @@ grains:
     kind: blueprint
     spec:
       source: 
-        store: amdocs-laas-poc
+        store: test-spec2-public-moshe
         path: blueprints/PCF_Full_Deploy.yaml
       inputs:
       - agent: aks-torque
