@@ -8,7 +8,7 @@ inputs:
   #   allowed-values: ["PCF2-B"]
   agent:
     type: agent
-    default: "aks-torque"
+    default: "moshe-production"
 
 grains:
   VMs:

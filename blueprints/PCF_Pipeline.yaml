@@ -4,7 +4,7 @@ description: PCF Only deploy v1
 inputs:
   agent:
     type: agent
-    default: "aks-torque"
+    default: "moshe-production"
 grains:
   PCF-Pipeline-Infra:
     kind: terraform
