@@ -1,0 +1,34 @@
+spec_version: 2
+description: Full PCF pipeline for Lineup 2B
+# blueprint inputs can be provided by the user, API or CI plugin when creating an environment from this blueprint.
+inputs:
+  # vm_set:
+  #   type: string
+  #   default: PCF2-B
+  #   allowed-values: ["PCF2-B"]
+  agent:
+    type: agent
+    default: "aks-torque"
+
+grains:
+  VMs:
+    kind: blueprint
+    spec:
+      source: 
+        store: amdocs-laas-poc
+        path: blueprints/Azure_Instances.yaml
+      inputs:
+      - vm_set: PCF2-B
+      - agent: aks-torque
+    tf-version: 1.4.6
+
+  PCF-Pipeline:
+    kind: blueprint
+    depends-on: VMs
+    spec:
+      source: 
+        store: amdocs-laas-poc
+        path: blueprints/PCF_Pipeline.yaml
+      inputs:
+      - agent: aks-torque
+    tf-version: 1.4.6

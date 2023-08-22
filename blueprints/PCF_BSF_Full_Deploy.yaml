@@ -1,0 +1,22 @@
+spec_version: 2
+description: Full PCF and BSF pipeline for Lineup 2B
+# blueprint inputs can be provided by the user, API or CI plugin when creating an environment from this blueprint.
+
+grains:
+  PCF-Deploy:
+    kind: blueprint
+    spec:
+      source: 
+        store: amdocs-laas-poc
+        path: blueprints/PCF_Full_Deploy.yaml
+      inputs:
+      - agent: aks-torque
+    tf-version: 1.4.6
+
+  # BSF-Deploy:
+  #   kind: blueprint
+  #   spec:
+  #     source: 
+  #       store: amdocs-laas-poc
+  #       path: blueprints/BSF_Full_Deploy.yaml
+  #   tf-version: 1.4.6

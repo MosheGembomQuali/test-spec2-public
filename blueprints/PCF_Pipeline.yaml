@@ -1,0 +1,119 @@
+spec_version: 2
+description: PCF Only deploy v1
+# blueprint inputs can be provided by the user, API or CI plugin when creating an environment from this blueprint.
+inputs:
+  agent:
+    type: agent
+    default: "aks-torque"
+grains:
+  PCF-Pipeline-Infra:
+    kind: terraform
+    spec:
+      tags:
+        auto-tag: false
+      source:
+        store: amdocs-laas-poc
+        path: terraform/ADO-Pipeline-Start
+      agent:
+      # The Torque agent that will be used to provision the environment.
+        name: '{{ .inputs.agent }}'
+        # A service account annotated with a role ARN with permissions to run the asset
+        # service-account: <service-account-name>
+      inputs:
+      - AZURE_ORGANIZATION: 'policies-ado'
+      - AZURE_PROJECT: 'policies-ado'
+      - PAT_TOKEN: '{{ .params.policies-ado-token }}'
+      - PIPELINE_ID: '41'
+      - SANDBOX_ID: '{{ sandboxid }}r1'
+      - pipeline_branch: 'vendor-NR2304L2'
+      - azureBranchI: 'vendor-NR2304L2'
+      - azureBranchLC: 'vendor-NR2304L2'
+      - azureBranchSD: 'vendor-NR2304L2'
+      - site_name: 'auk53a'
+      - azureRegion: 'eastus2'
+      outputs:
+      - RUN_ID
+    tf-version: 1.4.6
+
+  Infrastructure-Install:
+    kind: terraform
+    depends-on: PCF-Pipeline-Infra
+    spec:
+      tags:
+        auto-tag: false
+      source:
+        store: amdocs-laas-poc
+        path: terraform/ADO-Pipeline-Check-Stage
+      agent:
+      # The Torque agent that will be used to provision the environment.
+        name: '{{ .inputs.agent }}'
+        # A service account annotated with a role ARN with permissions to run the asset
+        # service-account: <service-account-name>
+      inputs:
+      - AZURE_ORGANIZATION: 'policies-ado'
+      - AZURE_PROJECT: 'policies-ado'
+      - PAT_TOKEN: '{{ .params.policies-ado-token }}'
+      - PIPELINE_ID: '41'
+      - SANDBOX_ID: '{{ sandboxid }}r1'
+      - RUN_ID: '{{ .grains.PCF-Pipeline-Infra.outputs.RUN_ID }}'
+      - TIMEOUT: "14400"
+      - STAGE_NAME: "disablethp"
+    tf-version: 1.4.6
+
+
+  PCF-Pipeline-App:
+    kind: terraform
+    depends-on: Infrastructure-Install
+    spec:
+      tags:
+        auto-tag: false
+      source:
+        store: amdocs-laas-poc
+        path: terraform/ADO-Pipeline-Start
+      agent:
+      # The Torque agent that will be used to provision the environment.
+        name: '{{ .inputs.agent }}'
+        # A service account annotated with a role ARN with permissions to run the asset
+        # service-account: <service-account-name>
+      inputs:
+      - AZURE_ORGANIZATION: 'policies-ado'
+      - AZURE_PROJECT: 'policies-ado'
+      - PAT_TOKEN: '{{ .params.policies-ado-token }}'
+      - PIPELINE_ID: '42'
+      - SANDBOX_ID: '{{ sandboxid }}r2'
+      - pipeline_branch: 'vendor-NR2304L2'
+      - azureBranchI: 'vendor-NR2304L2'
+      - azureBranchLC: 'vendor-NR2304L2'
+      - azureBranchSD: 'vendor-NR2304L2'
+      - site_name: 'auk53a'
+      - azureRegion: 'eastus2'
+      outputs:
+      - RUN_ID
+    # The terraform version that will be used to deploy the module
+    tf-version: 1.4.6
+
+  Final-App-Check:
+    kind: terraform
+    depends-on: PCF-Pipeline-App
+    spec:
+      tags:
+        auto-tag: false
+      source:
+        store: amdocs-laas-poc
+        path: terraform/ADO-Pipeline-Check-Stage
+      agent:
+      # The Torque agent that will be used to provision the environment.
+        name: '{{ .inputs.agent }}'
+        # A service account annotated with a role ARN with permissions to run the asset
+        # service-account: <service-account-name>
+      inputs:
+      - AZURE_ORGANIZATION: 'policies-ado'
+      - AZURE_PROJECT: 'policies-ado'
+      - PAT_TOKEN: '{{ .params.policies-ado-token }}'
+      - PIPELINE_ID: '42'
+      - SANDBOX_ID: '{{ sandboxid }}r2'
+      - RUN_ID: '{{ .grains.PCF-Pipeline-App.outputs.RUN_ID }}'
+      - TIMEOUT: "14400"
+      - STAGE_NAME: "appinstallcheckallfinal"
+    # The terraform version that will be used to deploy the module
+    tf-version: 1.4.6
