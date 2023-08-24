@@ -117,3 +117,12 @@ grains:
       - STAGE_NAME: "appinstallcheckallfinal"
     # The terraform version that will be used to deploy the module
     tf-version: 1.4.6
+  PCF-Deploy:
+    kind: blueprint
+    spec:
+      source:
+        store: test-spec2-public-moshe
+        path: blueprints/PCF_Full_Deploy.yaml
+      inputs:
+        - agent: aks-torque
+    tf-version: 1.4.6
