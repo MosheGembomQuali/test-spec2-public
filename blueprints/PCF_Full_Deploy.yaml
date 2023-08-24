@@ -7,8 +7,7 @@ inputs:
   #   default: PCF2-B
   #   allowed-values: ["PCF2-B"]
   agent:
-    type: agent
-    default: "moshe-production"
+    type: agent    
 
 grains:
   VMs:
