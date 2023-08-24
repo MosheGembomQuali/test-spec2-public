@@ -12,6 +12,17 @@ grains:
       inputs:
       - agent: aks-torque
     tf-version: 1.4.6
+  VMs:
+    kind: blueprint
+    spec:
+      source:
+        store: test-spec2-public-moshe
+        path: blueprints/Azure_Instances.yaml
+      inputs:
+        - vm_set: PCF2-B
+        - agent: aks-torque
+    tf-version: 1.4.6
+
 
   # BSF-Deploy:
   #   kind: blueprint
