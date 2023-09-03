@@ -7,7 +7,7 @@ inputs:
     type: agent
     display-style: normal
     description: "Compute service name."
-    default: moshe-localhost
+    default: moshe-production
 
 grains:
   validate:
@@ -17,7 +17,7 @@ grains:
         name: '{{ .inputs.compute-service }}'
       files:
       - path: "scripts/echo.sh"
-        source: test-spec2-public
+        source: test-spec2-public-moshe
       activities:
         deploy:
           commands:
