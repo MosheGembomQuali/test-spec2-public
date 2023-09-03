@@ -14,7 +14,7 @@ grains:
     kind: blueprint
     spec:
       source:
-        path: blueprints/multiple-tf
+        path: blueprints/multiple-tf-bad-path
         store: test-spec2-public
 #       agent:
 #         name: '{{.inputs.compute_service_name}}'
