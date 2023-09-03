@@ -10,7 +10,8 @@ grains:
     spec:
       source:
         path: terraform/simple-tf-module
-        store: test-spec2-public        
+        store: test-spec2-public-moshe
+        commit: 332349831de055df586f863ee28602c9021d0581
       agent:
         name: '{{.inputs.compute_service_name}}'
       inputs:
