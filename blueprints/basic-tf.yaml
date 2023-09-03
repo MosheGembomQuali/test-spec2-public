@@ -9,8 +9,9 @@ grains:
     kind: terraform    
     spec:
       source:
-        path: terraform/simple-tf-module-wrong-path
+        path: terraform/simple-tf-module
         store: test-spec2-public
+        commit: 332349831de055df586f863ee28602c9021d0581
       agent:
         name: '{{.inputs.compute_service_name}}'
       inputs:
