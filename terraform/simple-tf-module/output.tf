@@ -9,3 +9,7 @@ output output2 {
 output output3 {
   value = var.test_input1
 }
+
+output output4 {
+  value = var.test_input1
+}
