@@ -8,6 +8,8 @@ inputs:
     type: string
     display-style: normal
     description: "Kubernetes namespace for sandbox to be ran in."
+  execution_host:
+    type: string
 
 grains:
   nginx:
@@ -17,4 +19,4 @@ grains:
         path: github.com/QualiNext/test-spec2-public.git//manifests/nginx1/nginxservice.yaml
       namespace: '{{ .inputs.namespace }}'
       agent:
-        name: qa-eks
+        name: '{{.inputs.execution_host}}'
