@@ -1,6 +1,7 @@
 ---
-- name: Configure EC2 Instance
-  hosts: ec2-instances
+- name: Installed Nginx on EC2 Instance
+  hosts: ec2_instance
+  gather_facts: no
   connection: ssh
   tasks:
     - name: Wait for system to become reachable
@@ -30,4 +31,4 @@
     - name: Export outputs
       torque.collections.export_torque_outputs:
         outputs: 
-          nginx_service_result: '{{ nginx_service_result }}'
+          nginx_service_result: '{{ hostvars["ec2_instance"]["nginx_service_result"]["status"] }}'

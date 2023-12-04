@@ -1,0 +1,43 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Minimal IAM Resources Template
+
+Parameters:
+  GroupName:
+    Description: Name of the IAM Group
+    Type: String
+  UserName:
+    Description: Name of the IAM User
+    Type: String
+  RoleName:
+    Description: Name of the IAM Role
+    Type: String
+
+Resources:
+  MyIAMGroup:
+    Type: AWS::IAM::Group
+    Properties:
+      GroupName: !Ref GroupName
+
+  MyIAMRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Ref RoleName
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: sts:AssumeRole
+
+  MyIAMUser:
+    Type: AWS::IAM::User
+    Properties:
+      UserName: !Ref UserName
+
+  MyInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles:
+        - !Ref MyIAMRole  # Associate the IAM Group with the Instance Profile
+    DependsOn: MyIAMRole

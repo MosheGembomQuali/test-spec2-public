@@ -4,6 +4,23 @@ inputs:
   compute_service_name:
     type: agent
 
+outputs:
+  output1:
+    value: "http://www.google.com"
+    kind: link
+    quick: true
+  output2:
+    value: '{{.inputs.compute_service_name}}'
+    kind: link
+    quick: true
+  output3:
+    value: 'http://my-env-{{ sandboxid }}/some/api'
+    kind: link
+    quick: true
+  output4:
+    value: '{{ .params.MY_PARAM }}'
+    
+
 grains:
   tf1:
     kind: terraform

@@ -11,12 +11,12 @@ outputs:
  helm_output:
    value: '{{.grains.helm3.scripts.post-helm-install.outputs.testoutput}}'
  terraform_output:
-   value: '{{.grains.terraform2.outputs.output1}}'
+   value: '{{.grains.terraform1.outputs.output1}}'
 
 inputs:
   namespace:
     type: string
-    default: yakir-agent
+    default: yakir-test
   execution_host1:
     type: agent    
     description: must be k8s
@@ -45,11 +45,16 @@ inputs:
 # Dependencies Schema
 #
 #                                                  /-----> terraform3
-#   terraform1 -------\_________> terraform2 -----/
+#   terraform1 -------\_________> ansible1 -----/
 #                     /   \                       \------> helm2 -----> helm3
-#   helm1 -----------/     \---> kubernetes1
-#                                           \_____> shell1
-#
+#   helm1 -----------/     \---> kubernetes1                         /
+#        \                                  \_____> shell1          /
+#          \                   __________________                  /
+#            ----------------->|   bp           |----------------/
+#                              |      \         |
+#                              |         tf1    |
+#                              |________________|
+#                                 
 
 grains:
 
@@ -71,45 +76,73 @@ grains:
     kind: helm
     spec:
       source:
-        path: https://github.com/open-toolchain/hello-helm.git//chart/hello
+        store: test-spec2-public
+        path: helm/nginx        
       agent:
         name: '{{.inputs.execution_host1}}'
       commands:
-        - dep up chart/hello
+        - dep up helm/nginx
       release: '{{.inputs.release_name}}'
-      namespace: '{{.inputs.namespace}}'
+      namespace: '{{.inputs.namespace}}'           
+      inputs:        
+        - EnvironmentID: '{{ envid | downcase }}'
 
-  terraform2:
-    depends-on: terraform1, helm1
-    kind: terraform
+  bp:
+    depends-on: helm1
+    kind: blueprint
     spec:
       source:
-        path: terraform/simple-tf-module
+        path: blueprints/__runner_mgmt__0f2b598268-tf-simple.yaml
         store: test-spec2-public
-      agent:
-        name: '{{.inputs.execution_host2}}'
       inputs:
-        - test_input1: '{{.inputs.generic_input}}'
-        - test_input2: dontcare
-      outputs:
-        - output1
+        - compute_service_name: '{{.inputs.execution_host1}}'
 
+  ansible1:
+    kind: ansible
+    depends-on: terraform1
+    spec: 
+      source:
+        store: test-spec2-public
+        path: ansible/hello_world.yaml
+      agent:
+        name: '{{ .inputs.execution_host1 }}'
+      inputs:
+        - name: '{{ .inputs.generic_input }}'
+      inventory-file:
+        localhost:
+          hosts:
+            127.0.0.1:
+              ansible_connection: local
+              
   terraform3:
-    depends-on: terraform2
+    depends-on: ansible1
     kind: terraform
     spec:
       source:
         path: terraform/simple-tf-module
         store: test-spec2-public
+        branch: yakir-test
       agent:
         name: '{{.inputs.execution_host1}}'
       inputs:
         - test_input1: '{{.grains.terraform1.outputs.output1}}'
         - test_input2: dontcare
+      scripts: 
+        pre-tf-init:
+          source:
+            store: test-spec2-public
+            path : scripts/tomerv_user_script.sh
+            branch: yakir-test
+          arguments: "value"
+        pre-tf-destroy:
+          source:
+            store: test-spec2-public
+            path : scripts/tomerv_user_script.sh
+          arguments: "value"  
 
   helm2:
     kind: helm
-    depends-on: terraform2
+    depends-on: ansible1
     spec:
       source:
         path: https://github.com/open-toolchain/hello-helm.git//chart/hello

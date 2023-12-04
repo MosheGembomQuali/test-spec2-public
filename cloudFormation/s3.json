@@ -26,7 +26,7 @@
 			}
 		}
 	},
-	"Description": "Creates an S3 Bucket",
+	"Description": "Creates an S3 Bucket blah blah123",
 	"Resources": {
 		"S3Bucket": {
 			"Type": "AWS::S3::Bucket",
@@ -36,12 +36,12 @@
 				},
 				"Tags": [
 					{
-						"Key": "TestName",
-						"Value": "My Bucket"
-					},
-					{
 						"Key": "Tag",
 						"Value": "Shirel"
+					},
+					{
+						"Key": "Tag1",
+						"Value": "Shirel1"
 					}
 				]
 			}

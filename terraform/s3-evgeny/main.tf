@@ -16,20 +16,23 @@ data "aws_iam_user" "input_user" {
   user_name = var.user
 }
 
+data "aws_ssm_parameter" "my-secret-token" {
+  name = "my-secret-token"
+}
+
 resource "aws_s3_bucket" "bucket" {
   bucket = var.name
-#   acl    = var.acl
   force_destroy = true
 
   tags = {
     Name        = "My bucket"
     Environment = "Dev"
-    A_NEW_TAG = "NEW TAG BUT WITH A"
-    A_NEWEST_TAG = "A_NEWEST_TAG"
+    A_NEW_TAG = "NEW TAG"
+    SecretDataTag = data.aws_ssm_parameter.my-secret-token.arn
   }
 }
 
-# CREATE USER and POLICY test change456
+# CREATE USER and POLICY
 resource "aws_iam_policy" "policy" {
   count = "${var.user == "none" ? 0 : 1}"
   name        = "s3_access_${var.name}"
@@ -67,4 +70,20 @@ resource "aws_iam_user_policy_attachment" "attachment" {
 
 output "s3_bucket_arn" {
   value = aws_s3_bucket.bucket.arn
+}
+
+output "s3_bucket_regional_domain_name" {
+  value = aws_s3_bucket.bucket.bucket_regional_domain_name
+}
+
+output "s3_bucket_id" {
+  value = aws_s3_bucket.bucket.id
+}
+
+output "s3_bucket_region" {
+  value = aws_s3_bucket.bucket.region
+}
+
+output "s3_bucket_hosted_zone_id" {
+  value = aws_s3_bucket.bucket.hosted_zone_id
 }

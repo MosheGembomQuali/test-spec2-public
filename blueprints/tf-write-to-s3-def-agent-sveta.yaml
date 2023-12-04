@@ -8,8 +8,6 @@ inputs:
   content:
     type: string
     default: this is a default content
-  compute_service_name:
-    type: agent    
 
 # outputs:
 #   the_output:
@@ -22,7 +20,7 @@ grains:
       source:        
         path: github.com/QualiNext/terraform/s3-write
       agent:
-        name: '{{.inputs.compute_service_name}}'        
+        name: '{{.params.default_agent}}'        
 #       tags:
 # #         auto-tag: true
 # #         disable-tags-for:
@@ -30,4 +28,4 @@ grains:
       inputs:
         - BUCKET_NAME: '{{.inputs.bucket_name}}'
         - SANDBOX_ID: '{{sandboxId}}'
-        - CONTENT: '{{.inputs.content}} {{.params.param1}}'
+        - CONTENT: '{{.inputs.content}}'

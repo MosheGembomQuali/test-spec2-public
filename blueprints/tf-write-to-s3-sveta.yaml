@@ -9,7 +9,7 @@ inputs:
     type: string
     default: this is a default content
   compute_service_name:
-    type: agent    
+    type: agent
 
 # outputs:
 #   the_output:
@@ -30,4 +30,4 @@ grains:
       inputs:
         - BUCKET_NAME: '{{.inputs.bucket_name}}'
         - SANDBOX_ID: '{{sandboxId}}'
-        - CONTENT: '{{.inputs.content}} {{.params.param1}}'
+        - CONTENT: '{{.inputs.content}}'
