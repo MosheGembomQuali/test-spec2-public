@@ -15,8 +15,9 @@ grains:
   nginx:
     kind: kubernetes
     spec:
+
       source:
-        path: github.com/QualiNext/test-spec2-public.git//manifests/nginx1/nginxservice.yaml
+        path: github.com/MosheGembomQuali/test-spec2-public.git//manifests/nginx1/nginxservice.yaml
       namespace: '{{ .inputs.namespace }}'
       agent:
         name: '{{.inputs.execution_host}}'
