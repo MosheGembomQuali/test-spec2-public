@@ -16,7 +16,7 @@ grains:
     kind: kubernetes
     spec:
       source:
-        store: test-spec2-public-moshe
+        store: test-spec2-public
         path: manifests/nginx1/nginxservice.yaml
       namespace: '{{ .inputs.namespace }}'
       agent:
